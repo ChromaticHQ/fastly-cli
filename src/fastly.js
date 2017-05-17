@@ -9,7 +9,7 @@ const fastlyApiKeyDescription = 'Fastly API key';
 const fastlyServiceIdDescription = 'Fastly service ID';
 
 program
-  .version('0.1.0')
+  .version('0.3.0')
   .option('-k, --apikey <apikey>', `${fastlyApiKeyDescription}.`)
   .option('-s, --serviceid <serviceid>', `${fastlyServiceIdDescription}.`)
   .option('-h, --hardpurge', 'Hard purge immediately; do not use soft purge option.')
@@ -89,7 +89,12 @@ program
         return;
       }
 
-      fastly.softPurgeKey(program.serviceid, key, handleFastlyResponse(`Purged key: ${key}`));
+      if (program.hardpurge) {
+        fastly.purgeKey(program.serviceid, key, handleFastlyResponse(`Purged key: ${key}`));
+      }
+      else {
+        fastly.softPurgeKey(program.serviceid, key, handleFastlyResponse(`Purged key: ${key}`));
+      }
     });
   });
 
