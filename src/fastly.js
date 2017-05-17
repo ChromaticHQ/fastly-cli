@@ -66,7 +66,12 @@ program
         return;
       }
 
-      fastly.softPurge(program.serviceid, url, handleFastlyResponse(`Purged URL: ${url}`));
+      if (program.hardpurge) {
+        fastly.purge(program.serviceid, url, handleFastlyResponse(`Purged URL: ${url}`));
+      }
+      else {
+        fastly.softPurge(program.serviceid, url, handleFastlyResponse(`Purged URL: ${url}`));
+      }
     });
   });
 
