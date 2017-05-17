@@ -26,7 +26,6 @@ program
       if (!program.serviceid) {
         program.serviceid = yield prompt(`${fastlyServiceIdDescription}: `);
       }
-
       const fastly = require('fastly')(program.apikey);
 
       if (program.debug) {
@@ -57,8 +56,8 @@ program
       if (!program.serviceid) {
         program.serviceid = yield prompt(`${fastlyServiceIdDescription}: `);
       }
-
       const fastly = require('fastly')(program.apikey);
+
       if (program.debug) {
         console.log(chalk.bold.cyan(`API key: ${program.apikey}`));
         console.log(chalk.bold.cyan(`Service ID: ${program.serviceid}`));
@@ -67,7 +66,33 @@ program
         return;
       }
 
-      fastly.softPurge(program.serviceid, url, handleFastlyResponse(`Purged: ${url}`));
+      fastly.softPurge(program.serviceid, url, handleFastlyResponse(`Purged URL: ${url}`));
+    });
+  });
+
+program
+  .command('purge-key')
+  .description('Purge content with specified key.')
+  .arguments('<key>')
+  .action((key) => {
+    co(function *() {
+      if (!program.apikey) {
+        program.apikey = yield prompt(`${fastlyApiKeyDescription}: `);
+      }
+      if (!program.serviceid) {
+        program.serviceid = yield prompt(`${fastlyServiceIdDescription}: `);
+      }
+      const fastly = require('fastly')(program.apikey);
+
+      if (program.debug) {
+        console.log(chalk.bold.cyan(`API key: ${program.apikey}`));
+        console.log(chalk.bold.cyan(`Service ID: ${program.serviceid}`));
+        console.log(chalk.bold.cyan(`Key: ${key}`));
+        process.stdin.pause();
+        return;
+      }
+
+      fastly.softPurgeKey(program.serviceid, key, handleFastlyResponse(`Purged key: ${key}`));
     });
   });
 

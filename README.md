@@ -14,5 +14,8 @@ Command line interface for interacting with the [Fastly](http://www.fastly.com/)
 #### Purge URL
 `fastly purge -k YOUR-API-KEY -s YOUR-SERVICE-ID -d https://your-url-to-purge.com/path`
 
+#### Purge Key
+`fastly purge-key -k YOUR-API-KEY -s YOUR-SERVICE-ID -d YOUR-KEY-TO-PURGE`
+
 ### License
 MIT
