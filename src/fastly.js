@@ -29,9 +29,7 @@ program
       const fastly = require('fastly')(program.apikey);
 
       if (program.debug) {
-        console.log(chalk.bold.cyan(`API key: ${program.apikey}`));
-        console.log(chalk.bold.cyan(`Service ID: ${program.serviceid}`));
-        process.stdin.pause();
+        printDebug(program, null, null);
         return;
       }
 
@@ -59,10 +57,7 @@ program
       const fastly = require('fastly')(program.apikey);
 
       if (program.debug) {
-        console.log(chalk.bold.cyan(`API key: ${program.apikey}`));
-        console.log(chalk.bold.cyan(`Service ID: ${program.serviceid}`));
-        console.log(chalk.bold.cyan(`URL: ${url}`));
-        process.stdin.pause();
+        printDebug(program, url, null);
         return;
       }
 
@@ -90,10 +85,7 @@ program
       const fastly = require('fastly')(program.apikey);
 
       if (program.debug) {
-        console.log(chalk.bold.cyan(`API key: ${program.apikey}`));
-        console.log(chalk.bold.cyan(`Service ID: ${program.serviceid}`));
-        console.log(chalk.bold.cyan(`Key: ${key}`));
-        process.stdin.pause();
+        printDebug(program, null, key);
         return;
       }
 
@@ -112,4 +104,17 @@ function handleFastlyResponse(successMessage) {
     console.log(chalk.bold.green(successMessage));
     process.stdin.pause();
   }
+}
+
+function printDebug(program, url, key) {
+  console.log(chalk.bold.cyan(`API key: ${program.apikey}`));
+  console.log(chalk.bold.cyan(`Service ID: ${program.serviceid}`));
+  console.log(chalk.bold.cyan(`Hard purge: ${program.hardpurge || "false"}`));
+  if (url) {
+    console.log(chalk.bold.cyan(`URL: ${url}`));
+  }
+  if (key) {
+    console.log(chalk.bold.cyan(`Key: ${key}`));
+  }
+  process.stdin.pause();
 }
