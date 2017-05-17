@@ -1,0 +1,18 @@
+# fastly-cli.js
+[![dependencies Status](https://david-dm.org/ChromaticHQ/fastly-cli/status.svg)](https://david-dm.org/ChromaticHQ/fastly-cli)
+
+Command line interface for interacting with the [Fastly](http://www.fastly.com/) API written in NodeJS.
+
+### Installation
+
+`$ npm install -g fastly-cli`
+
+### Basic Usage
+#### Purge All Content
+`fastly purge-all -k YOUR-API-KEY -s YOUR-SERVICE-ID -d`
+
+#### Purge URL
+`fastly purge -k YOUR-API-KEY -s YOUR-SERVICE-ID -d https://your-url-to-purge.com/path`
+
+### License
+MIT

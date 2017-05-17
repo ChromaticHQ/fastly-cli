@@ -1,0 +1,26 @@
+{
+  "name": "fastly-cli",
+  "version": "0.1.0",
+  "description": "Command line interface for the Fastly API.",
+  "author": "Mark Dorison <mark@chromatichq.com>",
+  "keywords": "fastly, cdn, api, client, cli",
+  "homepage": "https://github.com/ChromaticHQ/fastly-cli",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ChromaticHQ/fastly-cli.git"
+  },
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "co": "^4.6.0",
+    "co-prompt": "^1.0.0",
+    "commander": "^2.9.0",
+    "fastly": "git+https://github.com/ChromaticHQ/fastly.git#85086829958a05faa53b445501d782e4772f356a"
+  },
+  "bin": {
+    "fastly": "./src/fastly.js"
+  },
+  "engines": {
+    "node": ">=4.8.3"
+  }
+}
