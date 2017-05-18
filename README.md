@@ -17,5 +17,18 @@ Command line interface for interacting with the [Fastly](http://www.fastly.com/)
 #### Purge Key
 `fastly purge-key -k YOUR-API-KEY -s YOUR-SERVICE-ID YOUR-KEY-TO-PURGE`
 
+#### List Datacenters
+`fastly datacenters -k YOUR-API-KEY`
+
+#### List Public IPs
+List public IP addresses for Fastly network.
+
+`fastly ip-list`
+
+#### Edge Check
+Retrieve headers and associated data of the content for a particular URL from each Fastly edge server.
+
+`fastly edge-check -k YOUR-API-KEY https://your-url-to-check.com/path`
+
 ### License
 MIT
