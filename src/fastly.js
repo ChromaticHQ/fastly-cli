@@ -29,8 +29,7 @@ program
       const fastly = require('fastly')(program.apikey);
 
       if (program.debug) {
-        printDebug(program, null, null);
-        return;
+        return printDebug(program, null, null);
       }
 
       if (program.hardpurge) {
@@ -57,8 +56,7 @@ program
       const fastly = require('fastly')(program.apikey);
 
       if (program.debug) {
-        printDebug(program, url, null);
-        return;
+        return printDebug(program, url, null);
       }
 
       if (program.hardpurge) {
@@ -85,8 +83,7 @@ program
       const fastly = require('fastly')(program.apikey);
 
       if (program.debug) {
-        printDebug(program, null, key);
-        return;
+        return printDebug(program, null, key);
       }
 
       if (program.hardpurge) {
