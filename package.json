@@ -15,7 +15,7 @@
     "co": "^4.6.0",
     "co-prompt": "^1.0.0",
     "commander": "^2.9.0",
-    "fastly": "git+https://github.com/ChromaticHQ/fastly.git#85086829958a05faa53b445501d782e4772f356a",
+    "fastly": "git+https://github.com/ChromaticHQ/fastly.git#downstream-changes",
     "prettyjson": "^1.2.1"
   },
   "bin": {
