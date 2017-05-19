@@ -18,10 +18,16 @@
     "fastly": "git+https://github.com/ChromaticHQ/fastly.git#downstream-changes",
     "prettyjson": "^1.2.1"
   },
+  "devDependencies": {
+    "eslint": "^3.19.0"
+  },
   "bin": {
     "fastly": "./lib/fastly.js"
   },
   "engines": {
     "node": ">=4.8.3"
+  },
+  "scripts": {
+    "test": "make test"
   }
 }

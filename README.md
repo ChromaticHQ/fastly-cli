@@ -1,5 +1,5 @@
 # fastly-cli
-[![dependencies Status](https://david-dm.org/ChromaticHQ/fastly-cli/status.svg)](https://david-dm.org/ChromaticHQ/fastly-cli)
+[![Build Status](https://travis-ci.org/ChromaticHQ/fastly-cli.svg?branch=master)](https://travis-ci.org/ChromaticHQ/fastly-cli) [![dependencies Status](https://david-dm.org/ChromaticHQ/fastly-cli/status.svg)](https://david-dm.org/ChromaticHQ/fastly-cli)
 
 Command line interface for interacting with the [Fastly](http://www.fastly.com/) API written in NodeJS.
 
