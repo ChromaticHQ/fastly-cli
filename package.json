@@ -1,6 +1,6 @@
 {
   "name": "fastly-cli",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Command line interface for the Fastly API.",
   "author": "Mark Dorison <mark@chromatichq.com>",
   "keywords": "fastly, cdn, api, client, cli",
