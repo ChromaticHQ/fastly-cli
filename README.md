@@ -5,10 +5,10 @@ Command line interface for interacting with the [Fastly](http://www.fastly.com/)
 
 ### Installation Options
 
-#### yarn
+#### via yarn
 `$ yarn global add fastly-cli`
 
-#### npm
+#### via npm
 `$ npm install -g fastly-cli`
 
 ### Basic Usage
