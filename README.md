@@ -3,7 +3,7 @@
 
 Command line interface for interacting with the [Fastly](http://www.fastly.com/) API written in NodeJS.
 
-### Installation Options
+### Installation
 
 #### via yarn
 `$ yarn global add fastly-cli`
