@@ -17,7 +17,7 @@ program
 
 program
   .command(`purge-all`)
-  .description(`Purge all fastly content.`)
+  .description(`Purge all Fastly content.`)
   .alias(`pa`)
   .action(() => {
     if (!fastlyApiKeyPresent(program) || !fastlyServiceIdPresent(program)) {
