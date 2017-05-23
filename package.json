@@ -21,7 +21,7 @@
     "eslint": "^3.19.0"
   },
   "bin": {
-    "fastly": "./lib/fastly.js"
+    "fastly": "./src/fastly.js"
   },
   "engines": {
     "node": ">=4.8.3"
