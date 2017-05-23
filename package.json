@@ -6,6 +6,7 @@
   "keywords": "fastly, cdn, api, client, cli",
   "homepage": "https://github.com/ChromaticHQ/fastly-cli",
   "license": "MIT",
+  "preferGlobal": true,
   "repository": {
     "type": "git",
     "url": "git://github.com/ChromaticHQ/fastly-cli.git"
