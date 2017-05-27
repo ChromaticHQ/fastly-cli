@@ -4,6 +4,22 @@ require(`should-sinon`);
 
 const util = require(`./util`);
 
+// The following before/after statements apply to the entire suite.
+before(() => {
+  // Supress key/id error messages.
+  sinon.stub(console, `error`).returns(null);
+});
+
+after(() => {
+  // Restore console.error() when tests are done.
+  console.error.restore();
+});
+
+afterEach(() => {
+  // Reset console.error() history after each test.
+  console.error.resetHistory();
+});
+
 describe(`util`, () => {
   it(`should return true when API key present`, (done) => {
     let program = { apikey: 'some string' }
@@ -39,17 +55,5 @@ describe(`util`, () => {
     console.error.should.be.calledOnce();
     result.should.equal(false);
     done();
-  });
-
-  before(() => {
-    sinon.stub(console, `error`).returns(null);
-  });
-
-  after(() => {
-    console.error.restore();
-  });
-
-  afterEach(() => {
-    console.error.resetHistory();
   });
 });

@@ -66,14 +66,6 @@ describe(`purge-all`, () => {
     done();
   });
 
-  before(() => {
-    sinon.stub(console, `error`).returns(null);
-  });
-
-  after(() => {
-    console.error.restore();
-  });
-
   beforeEach(() => {
     // Create fresh spies.
     sinon.spy(util, `apiKeyPresent`);

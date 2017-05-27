@@ -37,7 +37,6 @@ module.exports = {
       process.stdin.pause();
     };
   },
-  
 
   apiKeyDescription,
   serviceIdDescription,
