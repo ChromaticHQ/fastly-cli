@@ -34,5 +34,20 @@ Retrieve headers and associated data of the content for a particular URL from ea
 
 `fastly edge-check -k YOUR-API-KEY https://your-url-to-check.com/path`
 
-### License
+## Tests
+Tests consist of unit tests and linting. By default, we run all of them.
+
+### Run All Tests Once
+`$ npm test`
+
+### Run All Tests and Watch For Changes
+`$ npm run dev`
+
+### Run Unit Tests Only
+`$ npm run test:unit`
+
+### Lint Only
+`$ npm run test:lint`
+
+## License
 MIT

@@ -18,7 +18,12 @@
     "prettyjson": "^1.2.1"
   },
   "devDependencies": {
-    "eslint": "^3.19.0"
+    "eslint": "^3.19.0",
+    "mocha": "^3.4.2",
+    "nodemon": "^1.11.0",
+    "should": "^11.2.1",
+    "should-sinon": "0.0.5",
+    "sinon": "^2.3.2"
   },
   "bin": {
     "fastly": "./src/fastly.js"
@@ -27,6 +32,9 @@
     "node": ">=4.8.3"
   },
   "scripts": {
-    "test": "make test"
+    "test:unit": "mocha $(find src -name '*.test.js')",
+    "test:lint": "eslint $(find src -type f -not -name '*.test.js')",
+    "test": "npm run test:unit && npm run test:lint --silent",
+    "dev": "nodemon -x npm test"
   }
 }
