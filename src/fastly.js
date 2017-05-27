@@ -3,6 +3,7 @@
 
 const program = require(`commander`);
 const util = require(`./lib/util`);
+const Fastly = require(`fastly`);
 
 program
   .version(require(`../package.json`).version)
@@ -11,19 +12,9 @@ program
   .command(`purge-all`)
   .description(`Purge all Fastly content.`)
   .alias(`pa`)
-  .action((options) => {
-    if (!util.apiKeyPresent(options) || !util.serviceIdPresent(options)) {
-      return;
-    }
-    const fastly = require(`fastly`)(options.apikey);
-
-    if (options.hardpurge) {
-      fastly.purgeAll(options.serviceid, util.ResponseHandler(`All content purged.`));
-    }
-    else {
-      fastly.softPurgeAll(options.serviceid, util.ResponseHandler(`All content purged.`));
-    }
-  });
+  .option(util.apiKeyOption, `${util.apiKeyDescription}.`)
+  .option(util.serviceIdOption, `${util.serviceIdDescription}.`)
+  .action((options) => { require(`./lib/purge-all`)(options, Fastly, util); });
 
 program
   .command(`purge`)
