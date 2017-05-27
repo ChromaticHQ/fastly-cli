@@ -34,7 +34,7 @@
   "scripts": {
     "test:unit": "mocha $(find src -name '*.test.js')",
     "test:lint": "eslint $(find src -type f -not -name '*.test.js')",
-    "test": "npm run test:unit && npm run test:lint --silent",
+    "test": "npm run test:unit --silent && npm run test:lint --silent",
     "dev": "nodemon -x npm test"
   }
 }
