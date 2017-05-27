@@ -2,52 +2,36 @@
 'use strict';
 
 const program = require(`commander`);
-const chalk = require(`chalk`);
-
-const fastlyApiKeyDescription = `Fastly API key`;
-const fastlyServiceIdDescription = `Fastly service ID`;
-const fastlyApiKeyErrorMessage = `[error] ${fastlyApiKeyDescription} is required.`;
-const fastlyServiceIdErrorMessage = `[error] ${fastlyServiceIdDescription} is required.`;
+const util = require(`./lib/util`);
+const Fastly = require(`fastly`);
 
 program
   .version(require(`../package.json`).version)
-  .option(`-k, --apikey <apikey>`, `${fastlyApiKeyDescription}.`)
-  .option(`-s, --serviceid <serviceid>`, `${fastlyServiceIdDescription}.`)
+  .option(`-k, --apikey <apikey>`, `${util.apiKeyDescription}.`)
+  .option(`-s, --serviceid <serviceid>`, `${util.serviceIdDescription}.`)
   .option(`-h, --hardpurge`, `Hard purge immediately; do not use soft purge option.`);
 
 program
   .command(`purge-all`)
   .description(`Purge all Fastly content.`)
   .alias(`pa`)
-  .action(() => {
-    if (!fastlyApiKeyPresent(program) || !fastlyServiceIdPresent(program)) {
-      return;
-    }
-    const fastly = require(`fastly`)(program.apikey);
-
-    if (program.hardpurge) {
-      fastly.purgeAll(program.serviceid, handleFastlyResponse(`All content purged.`));
-    }
-    else {
-      fastly.softPurgeAll(program.serviceid, handleFastlyResponse(`All content purged.`));
-    }
-  });
+  .action(() => { require(`./lib/purge-all`)(program, Fastly, util); });
 
 program
   .command(`purge`)
   .description(`Purge content at specified specified URL.`)
   .arguments(`<url>`)
   .action((url) => {
-    if (!fastlyApiKeyPresent(program) || !fastlyServiceIdPresent(program)) {
+    if (!util.apiKeyPresent(program) || !util.serviceIdPresent(program)) {
       return;
     }
     const fastly = require(`fastly`)(program.apikey);
 
     if (program.hardpurge) {
-      fastly.purge(program.serviceid, url, handleFastlyResponse(`Purged URL: ${url}`));
+      fastly.purge(program.serviceid, url, util.ResponseHandler(`Purged URL: ${url}`));
     }
     else {
-      fastly.softPurge(program.serviceid, url, handleFastlyResponse(`Purged URL: ${url}`));
+      fastly.softPurge(program.serviceid, url, util.ResponseHandler(`Purged URL: ${url}`));
     }
   });
 
@@ -57,16 +41,16 @@ program
   .alias(`pk`)
   .arguments(`<key>`)
   .action((key) => {
-    if (!fastlyApiKeyPresent(program) || !fastlyServiceIdPresent(program)) {
+    if (!util.apiKeyPresent(program) || !util.serviceIdPresent(program)) {
       return;
     }
     const fastly = require(`fastly`)(program.apikey);
 
     if (program.hardpurge) {
-      fastly.purgeKey(program.serviceid, key, handleFastlyResponse(`Purged key: ${key}`));
+      fastly.purgeKey(program.serviceid, key, util.ResponseHandler(`Purged key: ${key}`));
     }
     else {
-      fastly.softPurgeKey(program.serviceid, key, handleFastlyResponse(`Purged key: ${key}`));
+      fastly.softPurgeKey(program.serviceid, key, util.ResponseHandler(`Purged key: ${key}`));
     }
   });
 
@@ -75,12 +59,12 @@ program
   .description(`List Fastly datacenters.`)
   .alias(`dcs`)
   .action(() => {
-    if (!fastlyApiKeyPresent(program)) {
+    if (!util.apiKeyPresent(program)) {
       return;
     }
     const fastly = require(`fastly`)(program.apikey);
 
-    fastly.datacenters(handleFastlyResponse(null));
+    fastly.datacenters(util.ResponseHandler(null));
   });
 
 program
@@ -90,7 +74,7 @@ program
   .action(() => {
     const fastly = require(`fastly`)(program.apikey);
 
-    fastly.publicIpList(handleFastlyResponse(null));
+    fastly.publicIpList(util.ResponseHandler(null));
   });
 
 program
@@ -99,44 +83,12 @@ program
   .alias(`ec`)
   .arguments(`<url>`)
   .action((url) => {
-    if (!fastlyApiKeyPresent(program)) {
+    if (!util.apiKeyPresent(program)) {
       return;
     }
     const fastly = require(`fastly`)(program.apikey);
 
-    fastly.edgeCheck(url, handleFastlyResponse(null));
+    fastly.edgeCheck(url, util.ResponseHandler(null));
   });
 
 program.parse(process.argv);
-
-function handleFastlyResponse(successMessage) {
-  return (err, fastlyResponseBody) => {
-    if (err) {
-      return console.dir(err);
-    }
-
-    const prettyjson = require(`prettyjson`);
-    const options = {};
-    console.log(prettyjson.render(fastlyResponseBody, options));
-    if (successMessage) {
-      console.log(chalk.green(successMessage));
-    }
-    process.stdin.pause();
-  };
-}
-
-function fastlyApiKeyPresent(program) {
-  if (!program.apikey) {
-    console.error(chalk.red(fastlyApiKeyErrorMessage));
-    return false;
-  }
-  return true;
-}
-
-function fastlyServiceIdPresent(program) {
-  if (!program.serviceid) {
-    console.error(chalk.red(fastlyServiceIdErrorMessage));
-    return false;
-  }
-  return true;
-}
