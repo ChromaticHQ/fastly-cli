@@ -5,49 +5,58 @@ const program = require(`commander`);
 const chalk = require(`chalk`);
 
 const fastlyApiKeyDescription = `Fastly API key`;
-const fastlyServiceIdDescription = `Fastly service ID`;
+const fastlyApiKeyOption = `-k, --apikey <required>`;
 const fastlyApiKeyErrorMessage = `[error] ${fastlyApiKeyDescription} is required.`;
+
+const fastlyServiceIdDescription = `Fastly service ID`;
+const fastlyServiceIdOption = `-s, --serviceid <required>`;
 const fastlyServiceIdErrorMessage = `[error] ${fastlyServiceIdDescription} is required.`;
+
+const fastlyHardPurgeOption = `-h, --hardpurge`;
+const fastlyHardPurgeDescription = `Hard purge immediately; do not use soft purge option.`;
 
 program
   .version(require(`../package.json`).version)
-  .option(`-k, --apikey <apikey>`, `${fastlyApiKeyDescription}.`)
-  .option(`-s, --serviceid <serviceid>`, `${fastlyServiceIdDescription}.`)
-  .option(`-h, --hardpurge`, `Hard purge immediately; do not use soft purge option.`);
 
 program
   .command(`purge-all`)
   .description(`Purge all Fastly content.`)
   .alias(`pa`)
-  .action(() => {
-    if (!fastlyApiKeyPresent(program) || !fastlyServiceIdPresent(program)) {
+  .option(fastlyApiKeyOption, `${fastlyApiKeyDescription}.`)
+  .option(fastlyServiceIdOption, `${fastlyServiceIdDescription}.`)
+  .option(fastlyHardPurgeOption, fastlyHardPurgeDescription)
+  .action((options) => {
+    if (!fastlyApiKeyPresent(options) || !fastlyServiceIdPresent(options)) {
       return;
     }
-    const fastly = require(`fastly`)(program.apikey);
+    const fastly = require(`fastly`)(options.apikey);
 
-    if (program.hardpurge) {
-      fastly.purgeAll(program.serviceid, handleFastlyResponse(`All content purged.`));
+    if (options.hardpurge) {
+      fastly.purgeAll(options.serviceid, handleFastlyResponse(`All content purged.`));
     }
     else {
-      fastly.softPurgeAll(program.serviceid, handleFastlyResponse(`All content purged.`));
+      fastly.softPurgeAll(options.serviceid, handleFastlyResponse(`All content purged.`));
     }
   });
 
 program
   .command(`purge`)
   .description(`Purge content at specified specified URL.`)
+  .option(fastlyApiKeyOption, `${fastlyApiKeyDescription}.`)
+  .option(fastlyServiceIdOption, `${fastlyServiceIdDescription}.`)
+  .option(fastlyHardPurgeOption, fastlyHardPurgeDescription)
   .arguments(`<url>`)
-  .action((url) => {
-    if (!fastlyApiKeyPresent(program) || !fastlyServiceIdPresent(program)) {
+  .action((url, options) => {
+    if (!fastlyApiKeyPresent(options) || !fastlyServiceIdPresent(options)) {
       return;
     }
-    const fastly = require(`fastly`)(program.apikey);
+    const fastly = require(`fastly`)(options.apikey);
 
-    if (program.hardpurge) {
-      fastly.purge(program.serviceid, url, handleFastlyResponse(`Purged URL: ${url}`));
+    if (options.hardpurge) {
+      fastly.purge(options.serviceid, url, handleFastlyResponse(`Purged URL: ${url}`));
     }
     else {
-      fastly.softPurge(program.serviceid, url, handleFastlyResponse(`Purged URL: ${url}`));
+      fastly.softPurge(options.serviceid, url, handleFastlyResponse(`Purged URL: ${url}`));
     }
   });
 
@@ -55,18 +64,21 @@ program
   .command(`purge-key`)
   .description(`Purge content with specified key.`)
   .alias(`pk`)
+  .option(fastlyApiKeyOption, `${fastlyApiKeyDescription}.`)
+  .option(fastlyServiceIdOption, `${fastlyServiceIdDescription}.`)
+  .option(fastlyHardPurgeOption, fastlyHardPurgeDescription)
   .arguments(`<key>`)
-  .action((key) => {
-    if (!fastlyApiKeyPresent(program) || !fastlyServiceIdPresent(program)) {
+  .action((key, options) => {
+    if (!fastlyApiKeyPresent(options) || !fastlyServiceIdPresent(options)) {
       return;
     }
-    const fastly = require(`fastly`)(program.apikey);
+    const fastly = require(`fastly`)(options.apikey);
 
-    if (program.hardpurge) {
-      fastly.purgeKey(program.serviceid, key, handleFastlyResponse(`Purged key: ${key}`));
+    if (options.hardpurge) {
+      fastly.purgeKey(options.serviceid, key, handleFastlyResponse(`Purged key: ${key}`));
     }
     else {
-      fastly.softPurgeKey(program.serviceid, key, handleFastlyResponse(`Purged key: ${key}`));
+      fastly.softPurgeKey(options.serviceid, key, handleFastlyResponse(`Purged key: ${key}`));
     }
   });
 
@@ -74,11 +86,12 @@ program
   .command(`datacenters`)
   .description(`List Fastly datacenters.`)
   .alias(`dcs`)
-  .action(() => {
-    if (!fastlyApiKeyPresent(program)) {
+  .option(fastlyApiKeyOption, `${fastlyApiKeyDescription}.`)
+  .action((options) => {
+    if (!fastlyApiKeyPresent(options)) {
       return;
     }
-    const fastly = require(`fastly`)(program.apikey);
+    const fastly = require(`fastly`)(options.apikey);
 
     fastly.datacenters(handleFastlyResponse(null));
   });
@@ -88,7 +101,7 @@ program
   .description(`List Fastly public IPs.`)
   .alias(`ipl`)
   .action(() => {
-    const fastly = require(`fastly`)(program.apikey);
+    const fastly = require(`fastly`)();
 
     fastly.publicIpList(handleFastlyResponse(null));
   });
@@ -97,12 +110,13 @@ program
   .command(`edge-check`)
   .description(`Check edge status of content at specified URL.`)
   .alias(`ec`)
+  .option(fastlyApiKeyOption, `${fastlyApiKeyDescription}.`)
   .arguments(`<url>`)
-  .action((url) => {
-    if (!fastlyApiKeyPresent(program)) {
+  .action((url, options) => {
+    if (!fastlyApiKeyPresent(options)) {
       return;
     }
-    const fastly = require(`fastly`)(program.apikey);
+    const fastly = require(`fastly`)(options.apikey);
 
     fastly.edgeCheck(url, handleFastlyResponse(null));
   });
@@ -125,16 +139,16 @@ function handleFastlyResponse(successMessage) {
   };
 }
 
-function fastlyApiKeyPresent(program) {
-  if (!program.apikey) {
+function fastlyApiKeyPresent(options) {
+  if (!options.apikey) {
     console.error(chalk.red(fastlyApiKeyErrorMessage));
     return false;
   }
   return true;
 }
 
-function fastlyServiceIdPresent(program) {
-  if (!program.serviceid) {
+function fastlyServiceIdPresent(options) {
+  if (!options.serviceid) {
     console.error(chalk.red(fastlyServiceIdErrorMessage));
     return false;
   }
