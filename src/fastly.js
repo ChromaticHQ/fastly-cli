@@ -41,7 +41,7 @@ program
 
 program
   .command(`purge`)
-  .description(`Purge content at specified specified URL.`)
+  .description(`Purge content at specified URL.`)
   .option(fastlyApiKeyOption, `${fastlyApiKeyDescription}.`)
   .option(fastlyServiceIdOption, `${fastlyServiceIdDescription}.`)
   .option(fastlyHardPurgeOption, fastlyHardPurgeDescription)
