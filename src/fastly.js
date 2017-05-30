@@ -62,7 +62,7 @@ program
 
 program
   .command(`purge-key`)
-  .description(`Purge content with specified key.`)
+  .description(`Purge content with specified cache key.`)
   .alias(`pk`)
   .option(fastlyApiKeyOption, `${fastlyApiKeyDescription}.`)
   .option(fastlyServiceIdOption, `${fastlyServiceIdDescription}.`)
