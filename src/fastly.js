@@ -6,7 +6,7 @@ const util = require(`./util`);
 const Fastly = require(`fastly`);
 
 program
-  .version(require(`../package.json`).version)
+  .version(require(`../package.json`).version);
 
 program
   .command(`purge-all`)
