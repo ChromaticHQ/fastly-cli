@@ -3,6 +3,9 @@
   "version": "0.4.1",
   "description": "Command line interface for the Fastly API.",
   "author": "Mark Dorison <mark@chromatichq.com>",
+  "contributors": [
+    "Alfonso Gómez-Arzola"
+  ],
   "keywords": "fastly, cdn, api, client, cli",
   "homepage": "https://github.com/ChromaticHQ/fastly-cli",
   "license": "MIT",
