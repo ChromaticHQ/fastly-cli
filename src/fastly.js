@@ -2,7 +2,7 @@
 'use strict';
 
 const program = require(`commander`);
-const util = require(`./lib/util`);
+const util = require(`./util`);
 const Fastly = require(`fastly`);
 
 program
@@ -14,7 +14,7 @@ program
   .alias(`pa`)
   .option(util.apiKeyOption, `${util.apiKeyDescription}.`)
   .option(util.serviceIdOption, `${util.serviceIdDescription}.`)
-  .action((options) => { require(`./lib/purge-all`)(options, Fastly, util); });
+  .action((options) => { require(`./commands/purge-all`)(options, Fastly, util); });
 
 program
   .command(`purge`)

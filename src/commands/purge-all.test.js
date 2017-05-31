@@ -2,7 +2,7 @@ const should = require(`should`);
 const sinon = require(`sinon`);
 require(`should-sinon`);
 
-const util = require(`./util`);
+const util = require(`./../util`);
 const testSubject = require(`./purge-all`);
 
 // Mock fastly dependency’s methods.
