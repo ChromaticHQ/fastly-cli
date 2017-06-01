@@ -32,7 +32,7 @@ describe(`purge-all`, () => {
 
   it(`should instantiate Fastly with API key`, (done) => {
     testSubject(options, Fastly, util);
-    Fastly.should.be.called();
+    Fastly.should.be.calledOnce();
     Fastly.getCalls()[0].args.should.deepEqual([options.apikey]);
     done();
   });
