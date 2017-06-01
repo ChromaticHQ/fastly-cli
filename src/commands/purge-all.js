@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = (options, Fastly, util) => {
   if (!util.apiKeyPresent(options) || !util.serviceIdPresent(options)) {
     return;
