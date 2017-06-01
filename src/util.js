@@ -10,16 +10,16 @@ const hardPurgeOption = `-h, --hardpurge`;
 const hardPurgeDescription = `Hard purge immediately; do not use soft purge option.`;
 
 module.exports = {
-  apiKeyPresent (program) {
-    if (!program.apikey) {
+  apiKeyPresent (options) {
+    if (!options.apikey) {
       console.error(chalk.red(apiKeyErrorMessage));
       return false;
     }
     return true;
   },
 
-  serviceIdPresent (program) {
-    if (!program.serviceid) {
+  serviceIdPresent (options) {
+    if (!options.serviceid) {
       console.error(chalk.red(serviceIdErrorMessage));
       return false;
     }
