@@ -3,36 +3,50 @@
 
 Command line interface for interacting with the [Fastly](http://www.fastly.com/) API written in NodeJS.
 
-### Installation
-
-#### via yarn
+## Installation
+### via yarn
 `$ yarn global add fastly-cli`
 
-#### via npm
+### via npm
 `$ npm install -g fastly-cli`
 
-### Basic Usage
-#### Purge All Content
+## Basic Usage
+### Purge All Content
 `fastly purge-all -k YOUR-API-KEY -s YOUR-SERVICE-ID`
 
-#### Purge URL
+### Purge URL
 `fastly purge -k YOUR-API-KEY -s YOUR-SERVICE-ID https://your-url-to-purge.com/path`
 
-#### Purge Key
+### Purge Key
 `fastly purge-key -k YOUR-API-KEY -s YOUR-SERVICE-ID YOUR-KEY-TO-PURGE`
 
-#### List Datacenters
+### List Datacenters
 `fastly datacenters -k YOUR-API-KEY`
 
-#### List Public IPs
+### List Public IPs
 List public IP addresses for Fastly network.
 
 `fastly ip-list`
 
-#### Edge Check
+### Edge Check
 Retrieve headers and associated data of the content for a particular URL from each Fastly edge server.
 
 `fastly edge-check -k YOUR-API-KEY https://your-url-to-check.com/path`
 
-### License
+## Tests
+Tests consist of unit tests and linting. By default, we run all of them.
+
+### Run All Tests Once
+`$ npm test`
+
+### Run All Tests and Watch For Changes
+`$ npm run dev`
+
+### Run Unit Tests Only
+`$ npm run test:unit`
+
+### Lint Only
+`$ npm run test:lint`
+
+## License
 MIT
