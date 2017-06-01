@@ -5,14 +5,6 @@ require(`should-sinon`);
 const util = require(`./../util`);
 const testSubject = require(`./purge-all`);
 
-// Mock fastly dependency’s methods.
-let purgeAllMock = function (serviceid, callback) {}
-let softPurgeAllMock = function (serviceid, callback) {}
-let fastly_return = {
-  purgeAll: purgeAllMock,
-  softPurgeAll: softPurgeAllMock,
-}
-
 // Scope vars that we’ll redefine on each test.
 let options, purgeAllStub, softPurgeAllStub, Fastly;
 
@@ -40,7 +32,8 @@ describe(`purge-all`, () => {
 
   it(`should instantiate Fastly with API key`, (done) => {
     testSubject(options, Fastly, util);
-    Fastly.getCalls(0)[0].args.should.deepEqual([options.apikey]);
+    Fastly.should.be.called();
+    Fastly.getCalls()[0].args.should.deepEqual([options.apikey]);
     done();
   });
 
@@ -55,7 +48,7 @@ describe(`purge-all`, () => {
     options.hardpurge = true;
     testSubject(options, Fastly, util);
     purgeAllStub.should.be.calledOnce();
-    purgeAllStub.getCalls(0)[0].args[0].should.equal(options.serviceid);
+    purgeAllStub.getCalls()[0].args[0].should.equal(options.serviceid);
     done();
   });
 
@@ -67,6 +60,14 @@ describe(`purge-all`, () => {
   });
 
   beforeEach(() => {
+    // Mock fastly dependency’s methods.
+    let purgeAllMock = function (serviceid, callback) {}
+    let softPurgeAllMock = function (serviceid, callback) {}
+    let fastly_return = {
+      purgeAll: purgeAllMock,
+      softPurgeAll: softPurgeAllMock,
+    }
+
     // Create fresh spies.
     sinon.spy(util, `apiKeyPresent`);
     sinon.spy(util, `serviceIdPresent`);
