@@ -14,7 +14,7 @@ let fastly_return = {
 }
 
 // Scope vars that we’ll redefine on each test.
-let program, purgeAllStub, softPurgeAllStub, Fastly;
+let options, purgeAllStub, softPurgeAllStub, Fastly;
 
 // Begin testing.
 describe(`purge-all`, () => {
@@ -23,46 +23,46 @@ describe(`purge-all`, () => {
   // and .afterEach() near the bottom of this file.
 
   it(`should stop without an API key`, (done) => {
-    delete program.apikey;
-    testSubject(program, Fastly, util);
+    delete options.apikey;
+    testSubject(options, Fastly, util);
     util.apiKeyPresent.should.be.calledOnce();
     Fastly.should.not.be.called();
     done();
   });
 
   it(`should stop without a Service ID`, (done) => {
-    delete program.serviceid;
-    testSubject(program, Fastly, util);
+    delete options.serviceid;
+    testSubject(options, Fastly, util);
     util.serviceIdPresent.should.be.calledOnce();
     Fastly.should.not.be.called();
     done();
   });
 
   it(`should instantiate Fastly with API key`, (done) => {
-    testSubject(program, Fastly, util);
-    Fastly.getCalls(0)[0].args.should.deepEqual([program.apikey]);
+    testSubject(options, Fastly, util);
+    Fastly.getCalls(0)[0].args.should.deepEqual([options.apikey]);
     done();
   });
 
   it(`should instantiate ResponseHandler with message`, (done) => {
-    testSubject(program, Fastly, util);
+    testSubject(options, Fastly, util);
     util.ResponseHandler.should.be.calledOnce();
     util.ResponseHandler.getCalls()[0].args[0].should.equal(`All content purged.`);
     done();
   });
 
   it(`should invoke .purgeAll()`, (done) => {
-    program.hardpurge = true;
-    testSubject(program, Fastly, util);
+    options.hardpurge = true;
+    testSubject(options, Fastly, util);
     purgeAllStub.should.be.calledOnce();
-    purgeAllStub.getCalls(0)[0].args[0].should.equal(program.serviceid);
+    purgeAllStub.getCalls(0)[0].args[0].should.equal(options.serviceid);
     done();
   });
 
   it(`should invoke .softPurgeAll()`, (done) => {
-    testSubject(program, Fastly, util);
+    testSubject(options, Fastly, util);
     softPurgeAllStub.should.be.calledOnce();
-    softPurgeAllStub.getCalls()[0].args[0].should.equal(program.serviceid);
+    softPurgeAllStub.getCalls()[0].args[0].should.equal(options.serviceid);
     done();
   });
 
@@ -77,8 +77,8 @@ describe(`purge-all`, () => {
     // Make fastly itself a stub.
     Fastly = sinon.stub().returns(fastly_return);
 
-    // Refresh program object.
-    program = {
+    // Refresh options object.
+    options = {
       apikey: `a key`,
       serviceid: `an id`
     }
