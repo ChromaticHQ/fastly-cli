@@ -3,6 +3,7 @@ const sinon = require(`sinon`);
 require(`should-sinon`);
 
 const util = require(`./../util`);
+const testData = require(`./../test.data`)
 const testSubject = require(`./purge-all`);
 
 // Scope vars that we’ll redefine on each test.
@@ -40,7 +41,7 @@ describe(`purge-all`, () => {
   it(`should instantiate ResponseHandler with message`, (done) => {
     testSubject(options, Fastly, util);
     util.ResponseHandler.should.be.calledOnce();
-    util.ResponseHandler.getCalls()[0].args[0].should.equal(`All content purged.`);
+    util.ResponseHandler.getCalls()[0].args[testData.argPositionOptions].should.equal(`All content purged.`);
     done();
   });
 
@@ -48,14 +49,14 @@ describe(`purge-all`, () => {
     options.hardpurge = true;
     testSubject(options, Fastly, util);
     purgeAllStub.should.be.calledOnce();
-    purgeAllStub.getCalls()[0].args[0].should.equal(options.serviceid);
+    purgeAllStub.getCalls()[0].args[testData.argPositionOptions].should.equal(options.serviceid);
     done();
   });
 
   it(`should invoke .softPurgeAll()`, (done) => {
     testSubject(options, Fastly, util);
     softPurgeAllStub.should.be.calledOnce();
-    softPurgeAllStub.getCalls()[0].args[0].should.equal(options.serviceid);
+    softPurgeAllStub.getCalls()[0].args[testData.argPositionOptions].should.equal(options.serviceid);
     done();
   });
 
