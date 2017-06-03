@@ -46,11 +46,7 @@ program
   .command(`ip-list`)
   .description(`List Fastly public IPs.`)
   .alias(`ipl`)
-  .action(() => {
-    const fastly = require(`fastly`)();
-
-    fastly.publicIpList(util.ResponseHandler(null));
-  });
+  .action((options) => { require(`./commands/ip-list`)(options, Fastly, util); });
 
 program
   .command(`edge-check`)
@@ -58,13 +54,6 @@ program
   .alias(`ec`)
   .option(util.apiKeyOption, `${util.apiKeyDescription}.`)
   .arguments(`<url>`)
-  .action((url, options) => {
-    if (!util.apiKeyPresent(options)) {
-      return;
-    }
-    const fastly = require(`fastly`)(options.apikey);
-
-    fastly.edgeCheck(url, util.ResponseHandler(null));
-  });
+  .action((url, options) => { require(`./commands/edge-check`)(options, Fastly, util, url); });
 
 program.parse(process.argv);
