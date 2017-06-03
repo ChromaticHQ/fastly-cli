@@ -33,33 +33,14 @@ program
   .option(util.serviceIdOption, `${util.serviceIdDescription}.`)
   .option(util.hardPurgeOption, util.hardPurgeDescription)
   .arguments(`<key>`)
-  .action((key, options) => {
-    if (!util.apiKeyPresent(options) || !util.serviceIdPresent(options)) {
-      return;
-    }
-    const fastly = require(`fastly`)(options.apikey);
-
-    if (options.hardpurge) {
-      fastly.purgeKey(options.serviceid, key, util.ResponseHandler(`Purged key: ${key}`));
-    }
-    else {
-      fastly.softPurgeKey(options.serviceid, key, util.ResponseHandler(`Purged key: ${key}`));
-    }
-  });
+  .action((key, options) => { require(`./commands/purge-key`)(options, Fastly, util, key); });
 
 program
   .command(`datacenters`)
   .description(`List Fastly datacenters.`)
   .alias(`dcs`)
   .option(util.apiKeyOption, `${util.apiKeyDescription}.`)
-  .action((options) => {
-    if (!util.apiKeyPresent(options)) {
-      return;
-    }
-    const fastly = require(`fastly`)(options.apikey);
-
-    fastly.datacenters(util.ResponseHandler(null));
-  });
+  .action((options) => { require(`./commands/datacenters`)(options, Fastly, util); });
 
 program
   .command(`ip-list`)
