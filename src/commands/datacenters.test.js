@@ -22,14 +22,6 @@ describe(`datacenters`, () => {
     done();
   });
 
-  it(`should not stop without a Service ID`, (done) => {
-    delete options.serviceid;
-    testSubject(options, Fastly, util);
-    util.serviceIdPresent.should.not.be.called();
-    Fastly.should.be.calledOnce();
-    done();
-  });
-
   it(`should instantiate Fastly with API key`, (done) => {
     testSubject(options, Fastly, util);
     Fastly.should.be.calledOnce();
@@ -46,7 +38,6 @@ describe(`datacenters`, () => {
   it(`should invoke .datacenters()`, (done) => {
     testSubject(options, Fastly, util);
     datacentersStub.should.be.calledOnce();
-    Fastly.getCalls()[0].args.should.deepEqual([options.apikey]);
     done();
   });
 
