@@ -43,7 +43,7 @@ describe(`purge`, () => {
   it(`should instantiate ResponseHandler with message`, (done) => {
     testSubject(options, Fastly, util, testUrl);
     util.ResponseHandler.should.be.calledOnce();
-    util.ResponseHandler.getCalls()[0].args[testData.argPositionOptions].should.equal(`Purged URL: ${testUrl}`);
+    util.ResponseHandler.getCalls()[0].args.should.deepEqual([`Purged URL: ${testUrl}`]);
     done();
   });
 
