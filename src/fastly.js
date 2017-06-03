@@ -23,19 +23,7 @@ program
   .option(util.serviceIdOption, `${util.serviceIdDescription}.`)
   .option(util.hardPurgeOption, util.hardPurgeDescription)
   .arguments(`<url>`)
-  .action((url, options) => {
-    if (!util.apiKeyPresent(options) || !util.serviceIdPresent(options)) {
-      return;
-    }
-    const fastly = require(`fastly`)(options.apikey);
-
-    if (options.hardpurge) {
-      fastly.purge(options.serviceid, url, util.ResponseHandler(`Purged URL: ${url}`));
-    }
-    else {
-      fastly.softPurge(options.serviceid, url, util.ResponseHandler(`Purged URL: ${url}`));
-    }
-  });
+  .action((url, options) => { require(`./commands/purge`)(options, Fastly, util, url); });
 
 program
   .command(`purge-key`)
