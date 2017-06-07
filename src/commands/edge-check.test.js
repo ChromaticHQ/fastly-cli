@@ -3,6 +3,7 @@ const sinon = require(`sinon`);
 require(`should-sinon`);
 
 const util = require(`./../util`);
+const testData = require(`./../test.data`)
 const testSubject = require(`./edge-check`);
 
 // Scope vars that we’ll redefine on each test.
@@ -16,28 +17,29 @@ describe(`edge-check`, () => {
 
   it(`should stop without an API key`, (done) => {
     delete options.apikey;
-    testSubject(options, Fastly, util);
+    testSubject(options, Fastly, util, testData.testUrl);
     util.apiKeyPresent.should.be.calledOnce();
     Fastly.should.not.be.called();
     done();
   });
 
   it(`should instantiate Fastly with API key`, (done) => {
-    testSubject(options, Fastly, util);
+    testSubject(options, Fastly, util, testData.testUrl);
     Fastly.should.be.calledOnce();
     Fastly.getCalls()[0].args.should.deepEqual([options.apikey]);
     done();
   });
 
   it(`should instantiate ResponseHandler`, (done) => {
-    testSubject(options, Fastly, util);
+    testSubject(options, Fastly, util, testData.testUrl);
     util.ResponseHandler.should.be.calledOnce();
     done();
   });
 
   it(`should invoke .edgeCheck()`, (done) => {
-    testSubject(options, Fastly, util);
+    testSubject(options, Fastly, util, testData.testUrl);
     edgeCheckStub.should.be.calledOnce();
+    edgeCheckStub.getCalls()[0].args[testData.argPositionEdgeCheckUrl].should.equal(testData.testUrl);
     done();
   });
 
