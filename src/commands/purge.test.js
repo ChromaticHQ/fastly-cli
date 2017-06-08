@@ -6,8 +6,6 @@ const util = require(`./../util`);
 const testData = require(`./../test.data`)
 const testSubject = require(`./purge`);
 
-const testUrl = `https://example.com`;
-
 // Scope vars that we’ll redefine on each test.
 let options, purgeStub, softPurgeStub, Fastly;
 
@@ -41,26 +39,26 @@ describe(`purge`, () => {
   });
 
   it(`should instantiate ResponseHandler with message`, (done) => {
-    testSubject(options, Fastly, util, testUrl);
+    testSubject(options, Fastly, util, testData.testUrl);
     util.ResponseHandler.should.be.calledOnce();
-    util.ResponseHandler.getCalls()[0].args.should.deepEqual([`Purged URL: ${testUrl}`]);
+    util.ResponseHandler.getCalls()[0].args.should.deepEqual([`Purged URL: ${testData.testUrl}`]);
     done();
   });
 
   it(`should invoke .purge()`, (done) => {
     options.hardpurge = true;
-    testSubject(options, Fastly, util, testUrl);
+    testSubject(options, Fastly, util, testData.testUrl);
     purgeStub.should.be.calledOnce();
     purgeStub.getCalls()[0].args[testData.argPositionOptions].should.equal(options.serviceid);
-    purgeStub.getCalls()[0].args[testData.argPositionUrl].should.equal(testUrl);
+    purgeStub.getCalls()[0].args[testData.argPositionUrl].should.equal(testData.testUrl);
     done();
   });
 
   it(`should invoke .softpurge()`, (done) => {
-    testSubject(options, Fastly, util, testUrl);
+    testSubject(options, Fastly, util, testData.testUrl);
     softPurgeStub.should.be.calledOnce();
     softPurgeStub.getCalls()[0].args[testData.argPositionOptions].should.equal(options.serviceid);
-    softPurgeStub.getCalls()[0].args[testData.argPositionUrl].should.equal(testUrl);
+    softPurgeStub.getCalls()[0].args[testData.argPositionUrl].should.equal(testData.testUrl);
     done();
   });
 
