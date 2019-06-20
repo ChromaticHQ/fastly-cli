@@ -21,7 +21,7 @@
     "prettyjson": "^1.2.1"
   },
   "devDependencies": {
-    "eslint": "^3.19.0",
+    "eslint": "^4.18.2",
     "mocha": "^3.4.2",
     "nodemon": "^1.11.0",
     "should": "^11.2.1",
